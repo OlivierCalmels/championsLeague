@@ -1,5 +1,7 @@
 # README
 
+DB Schema https://kitt.lewagon.com/db/22315
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
