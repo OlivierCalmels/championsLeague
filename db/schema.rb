@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2020_12_23_163139) do
   enable_extension "plpgsql"
 
   create_table "groups", force: :cascade do |t|
-    t.integer "number"
+    t.string "name"
     t.bigint "tournament_id", null: false
     t.bigint "team1_id"
     t.bigint "team2_id"
