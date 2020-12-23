@@ -79,13 +79,39 @@ p "**********************"
 p "***** Groups *********"
 p "**********************"
 
-tournament = Tournament.find_by(name:"2020").id
+p tournament = Tournament.find_by(name:"2020")
 
 p firstTeam = Team.find_by(name: "Bayern")
 p secondTeam = Team.find_by(name: "Atlético Madrid")
-p Group.create(tournament_id: tournament, first_team_id: firstTeam, second_team_id: secondTeam )
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
 
+p firstTeam = Team.find_by(name: "Real Madrid")
+p secondTeam = Team.find_by(name: "Monchenglad")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
 
+p firstTeam = Team.find_by(name: "Man City")
+p secondTeam = Team.find_by(name: "Porto")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
+
+p firstTeam = Team.find_by(name: "Liverpool")
+p secondTeam = Team.find_by(name: "Atalanta")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
+
+p firstTeam = Team.find_by(name: "Chelsea")
+p secondTeam = Team.find_by(name: "Seville")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
+
+p firstTeam = Team.find_by(name: "Dortmund")
+p secondTeam = Team.find_by(name: "Lazio")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
+
+p firstTeam = Team.find_by(name: "Juventus")
+p secondTeam = Team.find_by(name: "Barcelona")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
+
+p firstTeam = Team.find_by(name: "PSG")
+p secondTeam = Team.find_by(name: "RB Leipzig")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id )
 
 p "-------------------------"
 p "----------SEEDS END------"
