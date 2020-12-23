@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="banner">
+    <h1>Liste de tous les tournois</h1>
+  </div>
+
+  <ul><%@tournaments.each do |tournament|  %>
+    <li>
+    <%=link_to tournament.name, tournament_groups_path(tournament)   %>
+    </li>
+  <%end%>
+  </ul>
+</div>
+
