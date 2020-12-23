@@ -1,7 +1,8 @@
 class GroupsController < ApplicationController
 
   def index
-    @groups = Groups.all
+    @tournament = Tournament.find(params[:tournament_id])
+    @groups = Group.all
   end
 
 end

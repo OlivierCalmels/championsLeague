@@ -5,7 +5,7 @@
 
   <ul><%@groups.each do |group|  %>
     <li>
-    <%=link_to group.number, tournament_group_teams_path(@tournament, group)   %>
+    <%=link_to "Group #{group.name}", tournament_group_teams_path(@tournament, group)   %>
     </li>
   <%end%>
   </ul>
