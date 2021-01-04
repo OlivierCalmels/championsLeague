@@ -24,6 +24,10 @@ Tournament.destroy_all
 p "**********************"
 p "***** Tournament *****"
 p "**********************"
+Tournament.create(name:"2016")
+Tournament.create(name:"2017")
+Tournament.create(name:"2018")
+Tournament.create(name:"2019")
 Tournament.create(name:"2020")
 
 p "**********************"

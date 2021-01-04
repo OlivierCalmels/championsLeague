@@ -6,6 +6,12 @@
   <ul><%@groups.each do |group|  %>
     <li>
     <%=link_to "Group #{group.name}", tournament_group_path(@tournament, group)   %>
+        <ul>
+          <li> <%="Team 1: #{group.team1.name}" %>
+          </li>
+          <li> <%="Team 2: #{group.team2.name}" %>
+          </li>
+        </ul>
     </li>
   <%end%>
   </ul>
