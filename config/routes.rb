@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     resources :groups, only: [:index, :show] do
       resources :teams, only: [:index]
     end
+    ressources :matches, only: [:index, :show]
   end
 end

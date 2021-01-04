@@ -3,7 +3,9 @@
     <h1>Liste de tous les groupe du tournois <%=@tournament.name%></h1>
   </div>
 
-  <div class="btn btn-primary">Statistiques du tournois</div>
+  <%= link_to cheminMatchIndex do %> 
+    <div class="btn btn-primary">Statistiques du tournois</div>
+  <% end %>
 
   <ul><%@groups.each do |group|  %>
     <li>

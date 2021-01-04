@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="banner">
+    <h1>Liste des matches du tournois <%= @tournament %></h1>
+  </div>
+
+  <ul><%@tournaments.each do |tournament|  %>
+    <li>
+    <%=link_to tournament.name, tournament_groups_path(tournament)%>
+    <%=link_to tournament_path(tournament), data: {:confirm => 'Are you sure?'}, :method=> :delete do %>
+        <i class="far fa-trash-alt"></i>
+    <% end %>
+    </li>
+  <%end%>
+  </ul>
+</div>
+
