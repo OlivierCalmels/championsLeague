@@ -14,11 +14,13 @@ p "**********************"
 p "****** Destroy *******"
 p "**********************"
 
+p "----- matches -----"
+Match.destroy_all
 p "----- groups -----"
 Group.destroy_all
 p "----- teams -----"
 Team.destroy_all
-p "----- tounaments -----"
+p "----- tournaments -----"
 Tournament.destroy_all
 
 p "**********************"
@@ -118,6 +120,36 @@ p name = "H"
 p firstTeam = Team.find_by(name: "PSG")
 p secondTeam = Team.find_by(name: "RB Leipzig")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p "**********************"
+p "*** Matches (test) ****"
+p "**********************"
+
+p tournament = Tournament.find_by(name:"2020")
+
+p name = "1/8 A"
+p firstTeam = Team.find_by(name: "Bayern")
+p secondTeam = Team.find_by(name: "Monchenglad")
+p Match.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p name = "1/8 B"
+p firstTeam = Team.find_by(name: "Real Madrid")
+p secondTeam = Team.find_by(name: "Porto")
+p Match.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+
+p tournament = Tournament.find_by(name:"2019")
+
+p name = "1/8 A"
+p firstTeam = Team.find_by(name: "PSG")
+p secondTeam = Team.find_by(name: "Lazio")
+p Match.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p name = "1/8 B"
+p firstTeam = Team.find_by(name: "Bayern")
+p secondTeam = Team.find_by(name: "Atalanta")
+p Match.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
 p "-------------------------"
 p "----------SEEDS END------"
 p "-------------------------"

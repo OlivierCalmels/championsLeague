@@ -3,6 +3,8 @@
     <h1>Liste de tous les groupe du tournois <%=@tournament.name%></h1>
   </div>
 
+  <div class="btn btn-primary">Statistiques du tournois</div>
+
   <ul><%@groups.each do |group|  %>
     <li>
     <%=link_to "Group #{group.name}", tournament_group_path(@tournament, group)   %>
