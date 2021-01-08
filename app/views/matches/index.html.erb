@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="banner">
+    <h1>Liste des matches du tournois <%= @tournament.name %></h1>
+  </div>
+
+  <ul><%@teams.each do |team|  %>
+    <ul>
+      <li style="display: inline">
+      <%=team.name%>
+      <%=team.country%>
+      <%group = @groups.find_by(team1_id: team.id) || @groups.find_by(team2_id: team.id) %>
+      <%=group.name%>
+      </li>
+    </ul>  
+  <%end%>
+  </ul>
+</div>
+

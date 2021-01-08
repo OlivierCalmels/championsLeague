@@ -54,7 +54,7 @@ Team.create(name:"Porto", country:"Portugal")
 p "----- Liverpool -----"
 Team.create(name:"Liverpool", country:"Angleterre")
 p "----- Atalanta -----"
-Team.create(name:"Atalanta", country:"??")
+Team.create(name:"Atalanta", country:"Italie")
 
 p "----- Chelsea -----"
 Team.create(name:"Chelsea", country:"Angleterre")
@@ -74,7 +74,7 @@ Team.create(name:"Barcelona", country:"Espagne")
 p "----- PSG -----"
 Team.create(name:"PSG", country:"France")
 p "----- RB Leipzig -----"
-Team.create(name:"RB Leipzig", country:"??")
+Team.create(name:"RB Leipzig", country:"Allemagne")
 
 p "----- Manchester U -----"
 Team.create(name:"Manchester U", country:"Angleterre")
