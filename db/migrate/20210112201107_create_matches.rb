@@ -2,7 +2,7 @@ class CreateMatches < ActiveRecord::Migration[6.0]
   def change
     create_table :matches do |t|
       t.string :name
-      t.references :tournament, null: false, foreign_key: true
+      t.references :draw, null: false, foreign_key: true
       t.references :team1
       t.references :team2
 

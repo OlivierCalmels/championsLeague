@@ -1,8 +1,22 @@
 <div class="container">
   <div class="banner">
-    <h1>Liste des matches du tournois <%= @tournament.name %></h1>
+    <h1>Liste des tirages possibles pour la phase finale de la ligue des champions <%= @tournament.name %></h1>
   </div>
+  
+  <table>
+    <thread>
+      <tr>
+        <th colspan="2">Equipes sélectionnées</th>
+      </tr>
+    </thread>
+    <tbody>
+      <tr>
 
+      </tr>
+    </tbody>
+  
+  
+  </table>
   <ul><%@teams.each do |team|  %>
     <ul>
       <li style="display: inline">
