@@ -10,13 +10,7 @@ class MatchesController < ApplicationController
       p group.team2
       @teams << group.team2
     end
-    create_all_matches
   end
 
   # private
-
-  def create_all_matches
-    @teams = Team.where(tournament_id: Tournament.find_by(name: name))
-    puts @teams
-  end
 end

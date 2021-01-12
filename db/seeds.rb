@@ -18,6 +18,8 @@ p "----- matches -----"
 Match.destroy_all
 p "----- groups -----"
 Group.destroy_all
+p "----- draws -----"
+Draw.destroy_all
 p "----- teams -----"
 Team.destroy_all
 p "----- tournaments -----"
@@ -139,18 +141,31 @@ p firstTeam = Team.find_by(name: "Real Madrid")
 p secondTeam = Team.find_by(name: "Porto")
 p Match.create(draw_id: dr1.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
-
-p tournament = Tournament.find_by(name:"2019")
+p dr2 = Draw.create(tournament_id: tournament.id)
 
 p name = "1/8 A"
-p firstTeam = Team.find_by(name: "PSG")
-p secondTeam = Team.find_by(name: "Lazio")
-p Match.create(draw_id: dr1.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p firstTeam = Team.find_by(name: "Liverpool")
+p secondTeam = Team.find_by(name: "Atalanta")
+p Match.create(draw_id: dr2.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
 p name = "1/8 B"
 p firstTeam = Team.find_by(name: "Bayern")
+p secondTeam = Team.find_by(name: "Seville")
+p Match.create(draw_id: dr2.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p tournament = Tournament.find_by(name:"2019")
+
+p dr3 = Draw.create(tournament_id: tournament.id)
+
+p name = "1/8 C"
+p firstTeam = Team.find_by(name: "PSG")
+p secondTeam = Team.find_by(name: "Lazio")
+p Match.create(draw_id: dr3.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p name = "1/8 D"
+p firstTeam = Team.find_by(name: "Bayern")
 p secondTeam = Team.find_by(name: "Atalanta")
-p Match.create(draw_id: dr1.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p Match.create(draw_id: dr3.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
 p "-------------------------"
 p "----------SEEDS END------"
