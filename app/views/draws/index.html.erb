@@ -2,7 +2,13 @@
   <div class="banner">
     <h1>Liste des tirages possibles pour la phase finale de la ligue des champions <%= @tournament.name %></h1>
   </div>
-  
+  <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :true) do %> 
+    <div class="btn btn-primary">Générer statistiques du tournois</div>
+  <% end %>
+    <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :false) do %> 
+    <div class="btn btn-primary">Mettre la page à jour</div>
+  <% end %>
+
   <% @draws.each do |draw, matches| %>
     <div class="draw" style="display: flex; flex-direction: row">
       <h2 class="drawName" style="padding:30px"><%= draw.id %></h2>
