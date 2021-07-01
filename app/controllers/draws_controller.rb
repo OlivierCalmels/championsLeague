@@ -4,8 +4,9 @@ class DrawsController < ApplicationController
   def index
     @tournament = Tournament.find(params[:tournament_id])
     @draws = {}
-    destroy_draws
-    draws_maker
+    # destroy_draws
+    # draws_maker
+    DrawsCreationJob.set(wait: 10.seconds).perform_later()
     @draws_ar = Draw.where(tournament_id: @tournament.id)
     @draws_ar.each do |draw|
       matches = Match.where(draw_id: Draw.find(draw.id))
@@ -63,7 +64,7 @@ class DrawsController < ApplicationController
     # end
 
     (i..array.size - 1).each do |j|
-      raise if @call_permutations_num == 1000
+      raise if @call_permutations_num == 10000
 
       array[i], array[j] = array[j], array[i]
       # puts "this is the array after the swap: #{array}"
