@@ -13,7 +13,7 @@ class Draw < ApplicationRecord
 
   def self.draws_maker(tournament)
     @tournament = Tournament.find(tournament.id) #params[:tournament_id])
-    destroy_draws(@tournament)
+    # destroy_draws(@tournament)
     @groups = Group.where(tournament_id: @tournament.id)
     @teams1 = []
     @teams2 = []
@@ -81,6 +81,9 @@ class Draw < ApplicationRecord
           p "i = array.size -1 "
           @permut_num += 1
           p @permut_num.to_s
+          p ("Toutes permut #{@call_permutations_num}")
+          p ("Non_Valid permut #{@non_valid_permutations}")
+          p ("Draws #{@permut_num}")
           array.each { |team| p "- #{team.name}" }
           # array contains a draw
           draw_creation(array)
@@ -104,36 +107,20 @@ class Draw < ApplicationRecord
     last_match = [array[i - 1], array[i]]
     first_team = last_match[0]
     second_team = last_match[1]
-    # p "Last match: #{first_team.name} vs #{second_team.name}"
-    if first_team.name == 'Real Madrid' && second_team.name == 'Chelsea'
-      # raise
-    end
 
-    # Is first team a team1 ?
     return false unless @teams1.include?(first_team)
-    # Is second team a team2 ?
     return false unless @teams2.include?(second_team)
-    # p @teams1.include?(first_team)
-    # p @teams2.include?(second_team)
 
     # Are first and second teams from the different countries?
     return false if first_team.country == second_team.country
-
-    # p "#{first_team.name} is from #{first_team.country}"
-    # p "#{second_team.name} is from #{second_team.country}"
 
     # Are first and second teams from different groups?
     team1_group = @groups.where(team1_id: first_team.id).or(@groups.where(team2_id: first_team.id))
     team2_group = @groups.where(team1_id: second_team.id).or(@groups.where(team2_id: second_team.id))
 
-    # if team1_group != team2_group
-    # p "team 1 group #{team1_group.name} - #{first_team.name}"
-    # p "team 2 group #{team2_group.name} - #{second_team.name}"
-    # end
-    # p team1_group == team2_group
     return false if team1_group.ids == team2_group.ids
 
-    return true
+    true
   end
 
   def self.draw_creation(array)
