@@ -6,8 +6,8 @@ class Draw < ApplicationRecord
     p draws = Draw.where(tournament_id: tournament.id) # params[:tournament_id])
     draws.each do |draw|
     p matches = Match.where(draw_id: draw.id)
-    p matches.destroy_all
-    p draw.destroy
+    # p matches.destroy_all
+    # p draw.destroy
     end
   end
 
