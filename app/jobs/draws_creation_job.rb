@@ -7,9 +7,6 @@ class DrawsCreationJob < ApplicationJob
 
     # destroy_draws
     # draws_maker
-    raise
     Draw.draws_maker
-    raise
-
   end
 end

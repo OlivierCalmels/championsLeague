@@ -90,18 +90,34 @@ p "**********************"
 p tournament = Tournament.find_by(name:"2020")
 
 p name = "A"
-p firstTeam = Team.find_by(name: "Bayern")
-p secondTeam = Team.find_by(name: "Atlético Madrid")
+p firstTeam = Team.find_by(name: "Real Madrid")
+p secondTeam = Team.find_by(name: "Chelsea")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
 p name = "B"
-p firstTeam = Team.find_by(name: "Real Madrid")
-p secondTeam = Team.find_by(name: "Monchenglad")
+p firstTeam = Team.find_by(name: "RB Leipzig")
+p secondTeam = Team.find_by(name: "Seville")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 p name = "C"
-p firstTeam = Team.find_by(name: "Man City")
-p secondTeam = Team.find_by(name: "Porto")
+p firstTeam = Team.find_by(name: "Manchester U")
+p secondTeam = Team.find_by(name: "Dortmund")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+
+
+# p name = "A"
+# p firstTeam = Team.find_by(name: "Bayern")
+# p secondTeam = Team.find_by(name: "Atlético Madrid")
+# p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+# p name = "B"
+# p firstTeam = Team.find_by(name: "Real Madrid")
+# p secondTeam = Team.find_by(name: "Monchenglad")
+# p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+# p name = "C"
+# p firstTeam = Team.find_by(name: "Man City")
+# p secondTeam = Team.find_by(name: "Porto")
+# p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 # p name = "D"
 # p firstTeam = Team.find_by(name: "Liverpool")
 # p secondTeam = Team.find_by(name: "Atalanta")
@@ -129,12 +145,12 @@ p "**********************"
 
 p tournament = Tournament.find_by(name:"2020")
 
-p dr1 = Draw.create(tournament_id: tournament.id)
+# p dr1 = Draw.create(tournament_id: tournament.id)
 
-p name = "1/8 A"
-p firstTeam = Team.find_by(name: "Bayern")
-p secondTeam = Team.find_by(name: "Monchenglad")
-p Match.create(draw_id: dr1.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+# p name = "1/8 A"
+# p firstTeam = Team.find_by(name: "Bayern")
+# p secondTeam = Team.find_by(name: "Monchenglad")
+# p Match.create(draw_id: dr1.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
 # p name = "1/8 B"
 # p firstTeam = Team.find_by(name: "Real Madrid")
