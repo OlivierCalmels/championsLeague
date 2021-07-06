@@ -3,10 +3,6 @@ class DrawsCreationJob < ApplicationJob
   queue_as :default
 
   def perform(*)
-    # Do something later
-
-    # destroy_draws
-    # draws_maker
-    Draw.draws_maker
+    # Draw.draws_maker(@tournament)
   end
 end

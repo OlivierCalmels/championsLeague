@@ -6,14 +6,14 @@ class Draw < ApplicationRecord
     p draws = Draw.where(tournament_id: tournament.id) # params[:tournament_id])
     draws.each do |draw|
     p matches = Match.where(draw_id: draw.id)
-    # p matches.destroy_all
-    # p draw.destroy
+    p matches.destroy_all
+    draw.destroy
     end
   end
 
   def self.draws_maker(tournament)
     @tournament = Tournament.find(tournament.id) #params[:tournament_id])
-    # destroy_draws(@tournament)
+    destroy_draws(@tournament)
     @groups = Group.where(tournament_id: @tournament.id)
     @teams1 = []
     @teams2 = []
@@ -21,11 +21,7 @@ class Draw < ApplicationRecord
       @teams1 << group.team1
       @teams2 << group.team2
     end
-
     @teams = @teams1 + @teams2
-
-    # p 'All @teams:'
-    # @teams.each { |team| p "- #{team.name}" }
 
     p 'permut:'
     @permut_num = 0 # num of valid permutations => draws
@@ -64,10 +60,6 @@ class Draw < ApplicationRecord
       end
 
       array[i], array[j] = array[j], array[i]
-      # puts "this is the array after the swap: #{array}"
-      # p "entrée avec i: #{i}"
-      # p "array[0] = #{array[0]}"
-
       # p i if i.even?
       # test match validity only if i is odd, we just want to test the couples.
       # example : if array [A,B,C,D], we want to test A&B and C&D validity, not B&C
@@ -126,7 +118,7 @@ class Draw < ApplicationRecord
   def self.draw_creation(array)
     draw = Draw.create(tournament_id: @tournament.id)
     name_ind = 0
-    names = %w(A B C D E F G)
+    names = %w(A B C D E F G H)
     array.each_slice(2) do |pair|
       name = names[name_ind]
       name_ind += 1
