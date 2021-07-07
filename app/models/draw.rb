@@ -30,6 +30,7 @@ class Draw < ApplicationRecord
 
     start = Time.now
     permutations(@teams) # [1,2,3,4,5])
+    # matching(@teams1, @teams2)
     p start
     p Time.now
     p "temps = #{Time.now - start} s"
@@ -43,7 +44,7 @@ class Draw < ApplicationRecord
     p '--------------------'
   end
 
-  def self.permutations(array, i = 0)
+  def self.permutations(array, i = 0) # testing all permutations
     # puts "this is i at the beginning: #{i}, this is the array size: #{array.size}"
     # p array if i == array.size
     @call_permutations_num += 1
@@ -66,7 +67,11 @@ class Draw < ApplicationRecord
       # return true if i.even?
       # p "i => #{i}"
       # array.each { |team| p "- #{team.name}" }
-      if valid_matches?(array, i)
+      last_match = [array[i - 1], array[i]]
+      first_team = last_match[0]
+      second_team = last_match[1]
+
+      if valid_matches?(first_team,second_team , i)
         #  p "i => valid"
         #  p "array.size = #{array.size}"
         if i == array.size - 1
@@ -93,12 +98,8 @@ class Draw < ApplicationRecord
     end
   end
 
-  def self.valid_matches?(array, i)
+  def self.valid_matches?(first_team, second_team, i) # array, i)
     return true if i.even?
-
-    last_match = [array[i - 1], array[i]]
-    first_team = last_match[0]
-    second_team = last_match[1]
 
     return false unless @teams1.include?(first_team)
     return false unless @teams2.include?(second_team)
@@ -125,4 +126,15 @@ class Draw < ApplicationRecord
       p Match.create(draw_id: draw.id, team1_id: pair[0].id, team2_id: pair[1].id, name: name )
     end
   end
+
+  def self.matching(teams1, teams2) # alternative to permutation by iterating in array of teams
+    teams1.each do |team1|
+      teams2.each do |team2|
+        if [team1, team2].valid_matches?
+
+        end
+      end
+    end
+  end
+
 end
