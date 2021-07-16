@@ -5,14 +5,14 @@ class Draw < ApplicationRecord
   def self.destroy_draws(tournament)
     p draws = Draw.where(tournament_id: tournament.id) # params[:tournament_id])
     draws.each do |draw|
-    p matches = Match.where(draw_id: draw.id)
-    p matches.destroy_all
-    draw.destroy
+      p matches = Match.where(draw_id: draw.id)
+      p matches.destroy_all
+      draw.destroy
     end
   end
 
   def self.draws_maker(tournament)
-    @tournament = Tournament.find(tournament.id) #params[:tournament_id])
+    @tournament = Tournament.find(tournament.id) # params[:tournament_id])
     destroy_draws(@tournament)
     @groups = Group.where(tournament_id: @tournament.id)
     @teams1 = []
@@ -29,8 +29,10 @@ class Draw < ApplicationRecord
     @non_valid_permutations = 0 # Non_Valid permuts 
 
     start = Time.now
-    permutations(@teams) # [1,2,3,4,5])
-    # matching(@teams1, @teams2)
+    # permutations(@teams) # [1,2,3,4,5]) Version 1 de permut
+    # matching(@teams1, @teams2)        Version 2 de permut
+    combining(@teams)                 # Version 3 de permut
+    p "The end is coming....................."
     p start
     p Time.now
     p "temps = #{Time.now - start} s"
@@ -44,7 +46,7 @@ class Draw < ApplicationRecord
     p '--------------------'
   end
 
-  def self.permutations(array, i = 0) # testing all permutations
+  def self.permutations(array, i=0) # testing all permutations
     # puts "this is i at the beginning: #{i}, this is the array size: #{array.size}"
     # p array if i == array.size
     @call_permutations_num += 1
@@ -54,6 +56,8 @@ class Draw < ApplicationRecord
     # end
 
     (i..array.size - 1).each do |j|
+      next if array[i].name == array[j].name
+
       if @call_permutations_num == 500
         p ("Toutes permut #{@call_permutations_num}")
         p ("Non_Valid permut #{@non_valid_permutations}")
@@ -61,6 +65,9 @@ class Draw < ApplicationRecord
       end
 
       array[i], array[j] = array[j], array[i]
+      p "i = #{i} - #{array[i].name} , j = #{j} - #{array[j].name}"
+      array.each { |team| p "- #{team.name}" }
+
       # p i if i.even?
       # test match validity only if i is odd, we just want to test the couples.
       # example : if array [A,B,C,D], we want to test A&B and C&D validity, not B&C
@@ -71,26 +78,29 @@ class Draw < ApplicationRecord
       first_team = last_match[0]
       second_team = last_match[1]
 
-      if valid_matches?(first_team,second_team , i)
-        #  p "i => valid"
-        #  p "array.size = #{array.size}"
-        if i == array.size - 1
-          p "i = array.size -1 "
-          @permut_num += 1
-          p @permut_num.to_s
-          p ("Toutes permut #{@call_permutations_num}")
-          p ("Non_Valid permut #{@non_valid_permutations}")
-          p ("Draws #{@permut_num}")
-          array.each { |team| p "- #{team.name}" }
-          # array contains a draw
-          draw_creation(array)
+      permutations(array, i + 1)
+      # if valid_matches?(first_team, second_team, i)
+      #   #  p "i => valid"
+      #   #  p "array.size = #{array.size}"
+      #   raise if i == 1
+      #   if i == array.size - 1
 
-        end
-        permutations(array, i + 1)
-      else
-        p "ICIIIIIII--------------"
-        @non_valid_permutations += 1
-      end
+      #     p "i = array.size -1 "
+      #     @permut_num += 1
+      #     p @permut_num.to_s
+      #     p ("Toutes permut #{@call_permutations_num}")
+      #     p ("Non_Valid permut #{@non_valid_permutations}")
+      #     p ("Draws #{@permut_num}")
+      #     array.each { |team| p "- #{team.name}" }
+      #     # array contains a draw
+      #     draw_creation(array)
+      #   end
+      #   raise
+      #   permutations(array, i + 1)
+      # else
+      #   p "ICIIIIIII--------------"
+      #   @non_valid_permutations += 1
+      # end
       # p "sortie avec i: #{i}"
       # puts "exited recursive calls"
       array[i], array[j] = array[j], array[i]
@@ -98,9 +108,7 @@ class Draw < ApplicationRecord
     end
   end
 
-  def self.valid_matches?(first_team, second_team, i) # array, i)
-    return true if i.even?
-
+  def self.valid_matches?(first_team, second_team, i = 2) # array, i)
     return false unless @teams1.include?(first_team)
     return false unless @teams2.include?(second_team)
 
@@ -127,14 +135,56 @@ class Draw < ApplicationRecord
     end
   end
 
+# -----------------------------------
   def self.matching(teams1, teams2) # alternative to permutation by iterating in array of teams
     teams1.each do |team1|
       teams2.each do |team2|
-        if [team1, team2].valid_matches?
-
+        if valid_matches?(team1, team2)
+          p team1, team2
         end
       end
     end
   end
 
+  def self.combining(teams)
+    # ressources https://tchryssos.medium.com/array-combinations-and-permutations-f9599ac5d403
+    # create array with all combinations
+      all_combinations = teams.combination(2).to_a
+      #allCombinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
+    # eliminate forbidden combinations, create array with all matches
+      allowed_combinations = all_combinations.select { |combination| valid_matches?(combination[0], combination[1]) }
+      p "Allowed combinations :limit => size #By default SQL String limit 255 character 
+      #Ex:- :limit => 40"
+      allowed_combinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
+    # create draws
+      # Create all combinaisons of "combinaison" with allowedCombinations.combinaison(n) where n is the number of matches per draw
+      # n = number of groups in the tournament 
+      @n = @groups.count
+      p "n = #{@n}"
+      draw_to_create = []
+      draws_maker_v3(allowed_combinations, draw_to_create, 0)
+  end
+
+  def self.draws_maker_v3(allowed_combinations,
+                          draw_to_create,
+                          current_index)
+    # current_index : Current index in the allowedCombinations array.
+    (current_index..allowed_combinations.count-1).each do |index|
+      # test of combination. Are the teams in combination uniques? If they are, ad combination to draw to create
+      # raise if draw_to_create.count == 2
+      if (draw_to_create.flatten & allowed_combinations[index].flatten).none? # ([2, 6, 13, 99, 27] & [2, 6]).any?
+        draw_to_create << allowed_combinations[index]
+        if draw_to_create.count == @n-1
+          draw_to_create.each { |combination| p "#{combination[0].name} - #{combination[1].name} "}
+          p "Create Draw"
+        end
+
+        draws_maker_v3(allowed_combinations, draw_to_create, current_index + 1)
+      else
+        p "Fausse route"
+      end
+    end
+    
+
+  end
 end
