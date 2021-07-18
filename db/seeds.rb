@@ -131,10 +131,10 @@ p name = "E"
 p firstTeam = Team.find_by(name: "Chelsea")
 p secondTeam = Team.find_by(name: "Seville")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
-# p name = "F"
-# p firstTeam = Team.find_by(name: "Dortmund")
-# p secondTeam = Team.find_by(name: "Lazio")
-# p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "F"
+p firstTeam = Team.find_by(name: "Dortmund")
+p secondTeam = Team.find_by(name: "Lazio")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 # p name = "G"
 # p firstTeam = Team.find_by(name: "Juventus")
 # p secondTeam = Team.find_by(name: "Barcelona")

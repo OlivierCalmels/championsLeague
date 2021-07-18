@@ -162,29 +162,34 @@ class Draw < ApplicationRecord
       @n = @groups.count
       p "n = #{@n}"
       draw_to_create = []
+      @all_draws = []
       draws_maker_v3(allowed_combinations, draw_to_create, 0)
+      p @all_draws.size
+      raise
   end
 
   def self.draws_maker_v3(allowed_combinations,
                           draw_to_create,
                           current_index)
+    p "----------- draws_maker_v3 with draw_to_create:"
+    draw_to_create.each { |combination| p "#{combination[0].name}- #{combination[1].name} "}
+    p "and current_index: #{current_index}"
     # current_index : Current index in the allowedCombinations array.
     (current_index..allowed_combinations.count-1).each do |index|
       # test of combination. Are the teams in combination uniques? If they are, ad combination to draw to create
       # raise if draw_to_create.count == 2
       if (draw_to_create.flatten & allowed_combinations[index].flatten).none? # ([2, 6, 13, 99, 27] & [2, 6]).any?
         draw_to_create << allowed_combinations[index]
-        if draw_to_create.count == @n-1
+        if draw_to_create.count == @n
           draw_to_create.each { |combination| p "#{combination[0].name} - #{combination[1].name} "}
-          p "Create Draw"
+          p "*************Create Draw**************"
+          @all_draws << draw_to_create
+        else
+          draws_maker_v3(allowed_combinations, draw_to_create, current_index + 1)
         end
-
-        draws_maker_v3(allowed_combinations, draw_to_create, current_index + 1)
       else
         p "Fausse route"
       end
     end
-    
-
   end
 end
