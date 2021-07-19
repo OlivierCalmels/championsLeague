@@ -149,23 +149,31 @@ class Draw < ApplicationRecord
   def self.combining(teams)
     # ressources https://tchryssos.medium.com/array-combinations-and-permutations-f9599ac5d403
     # create array with all combinations
-      all_combinations = teams.combination(2).to_a
-      #allCombinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
+    all_combinations = teams.combination(2).to_a
+    # allCombinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
     # eliminate forbidden combinations, create array with all matches
-      allowed_combinations = all_combinations.select { |combination| valid_matches?(combination[0], combination[1]) }
-      p "Allowed combinations :limit => size #By default SQL String limit 255 character 
+    allowed_combinations = all_combinations.select { |combination| valid_matches?(combination[0], combination[1]) }
+    p "Allowed combinations :limit => size #By default SQL String limit 255 character 
       #Ex:- :limit => 40"
-      allowed_combinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
+    allowed_combinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
     # create draws
-      # Create all combinaisons of "combinaison" with allowedCombinations.combinaison(n) where n is the number of matches per draw
-      # n = number of groups in the tournament 
-      @n = @groups.count
-      p "n = #{@n}"
-      draw_to_create = []
-      @all_draws = []
-      draws_maker_v3(allowed_combinations, draw_to_create, 0)
-      p @all_draws.size
-      raise
+    # Create all combinaisons of "combinaison" with allowedCombinations.combinaison(n) where n is the number of matches per draw
+    # n = number of groups in the tournament 
+    @n = @groups.count
+    p "n = #{@n}"
+    draw_to_create = []
+    @all_draws = []
+    @fausses_routes = 0
+    @index_in_draw = 1
+    draws_maker_v3(allowed_combinations, draw_to_create, 0)
+    raise
+    @all_draws.each_with_index do |draw, ind|
+      p "-----Draw n°#{ind}"
+      draw.each_with_index do |match, ind|
+        p "#{match[0].name}- #{match[1].name} "
+      end
+    end
+    raise
   end
 
   def self.draws_maker_v3(allowed_combinations,
@@ -175,7 +183,7 @@ class Draw < ApplicationRecord
     draw_to_create.each { |combination| p "#{combination[0].name}- #{combination[1].name} "}
     p "and current_index: #{current_index}"
     # current_index : Current index in the allowedCombinations array.
-    (current_index..allowed_combinations.count-1).each do |index|
+    (current_index..allowed_combinations.count - 1).each do |index|
       # test of combination. Are the teams in combination uniques? If they are, ad combination to draw to create
       # raise if draw_to_create.count == 2
       if (draw_to_create.flatten & allowed_combinations[index].flatten).none? # ([2, 6, 13, 99, 27] & [2, 6]).any?
@@ -184,12 +192,25 @@ class Draw < ApplicationRecord
           draw_to_create.each { |combination| p "#{combination[0].name} - #{combination[1].name} "}
           p "*************Create Draw**************"
           @all_draws << draw_to_create
+          if draw_to_create[0][0].name == "Chelsea"
+            draw_to_create.each { |combination| p "#{combination[0].name} - #{combination[1].name} "}
+            byebug
+          end
+          draw_to_create.pop
         else
+          @index_in_draw += 1
           draws_maker_v3(allowed_combinations, draw_to_create, current_index + 1)
         end
       else
         p "Fausse route"
+        @fausses_routes += 1
+        byebug if @fausses_routes == 37330
       end
     end
+    draw_to_create.pop
+    @index_in_draw -= 1
+    p "#{@index_in_draw}"
+    p "#{draw_to_create.count}"
+    # byebug
   end
 end
