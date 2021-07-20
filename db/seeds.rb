@@ -33,6 +33,7 @@ Tournament.create(name:"2017")
 Tournament.create(name:"2018")
 Tournament.create(name:"2019")
 Tournament.create(name:"2020")
+Tournament.create(name:"2021")
 
 p "**********************"
 p "***** Teams **********"
@@ -200,6 +201,43 @@ p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: s
 p name = "G"
 p firstTeam = Team.find_by(name: "Juventus")
 p secondTeam = Team.find_by(name: "Barcelona")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p "****** 2021 *****"
+p tournament = Tournament.find_by(name:"2021")
+
+p name = "A"
+p firstTeam = Team.find_by(name: "Bayern")
+p secondTeam = Team.find_by(name: "Atlético Madrid")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+
+p name = "B"
+p firstTeam = Team.find_by(name: "Real Madrid")
+p secondTeam = Team.find_by(name: "Monchenglad")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "C"
+p firstTeam = Team.find_by(name: "Man City")
+p secondTeam = Team.find_by(name: "Porto")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "D"
+p firstTeam = Team.find_by(name: "Liverpool")
+p secondTeam = Team.find_by(name: "Atalanta")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "E"
+p firstTeam = Team.find_by(name: "Chelsea")
+p secondTeam = Team.find_by(name: "Seville")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "F"
+p firstTeam = Team.find_by(name: "Dortmund")
+p secondTeam = Team.find_by(name: "Lazio")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "G"
+p firstTeam = Team.find_by(name: "Juventus")
+p secondTeam = Team.find_by(name: "Barcelona")
+p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+p name = "H"
+p firstTeam = Team.find_by(name: "PSG")
+p secondTeam = Team.find_by(name: "RB Leipzig")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
 p "**********************"

@@ -183,18 +183,20 @@ class Draw < ApplicationRecord
   end
 
   def self.select_first_team(all_draws, teams1)
-
-    all_draws.select do |draw|
-      # teams1.each_with_index do |team|
-      # p team.name
+    draws_good_first_team = all_draws.select do |draw|
+      results = draw.each_with_index.map do |match, ind|
+      match[0] == teams1[ind]
+      end
+      results.all?{|result| result == true}
     end
+    return draws_good_first_team
   end
   
 
   def self.draws_maker_v3(allowed_matches, n, teams1)
     p "----------- draws_maker_v3 with draw_to_create:"
     all_draws = allowed_matches.combination(n).to_a
-    p "@all_draws count #{all_draws.count}"
+    p "all_draws count #{all_draws.count}"
     draws_good_first_team = select_first_team(all_draws, teams1)
     uniques_draws = find_uniques_draws(draws_good_first_team)
     p "---------@uniques_draws count #{uniques_draws.count}"
