@@ -74,9 +74,9 @@ class Draw < ApplicationRecord
       # return true if i.even?
       # p "i => #{i}"
       # array.each { |team| p "- #{team.name}" }
-      last_match = [array[i - 1], array[i]]
-      first_team = last_match[0]
-      second_team = last_match[1]
+      # last_match = [array[i - 1], array[i]]
+      # first_team = last_match[0]
+      # second_team = last_match[1]
 
       permutations(array, i + 1)
       # if valid_matches?(first_team, second_team, i)
@@ -149,68 +149,67 @@ class Draw < ApplicationRecord
   def self.combining(teams)
     # ressources https://tchryssos.medium.com/array-combinations-and-permutations-f9599ac5d403
     # create array with all combinations
-    all_combinations = teams.combination(2).to_a
+    all_matches = teams.combination(2).to_a
     # allCombinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
     # eliminate forbidden combinations, create array with all matches
-    allowed_combinations = all_combinations.select { |combination| valid_matches?(combination[0], combination[1]) }
+    @allowed_matches = all_matches.select { |match| valid_matches?(match[0], match[1]) }
     p "Allowed combinations :limit => size #By default SQL String limit 255 character 
       #Ex:- :limit => 40"
-    allowed_combinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
+    @allowed_matches.each {|match| p "#{match[0].name} - #{match[1].name}"}
     # create draws
     # Create all combinaisons of "combinaison" with allowedCombinations.combinaison(n) where n is the number of matches per draw
     # n = number of groups in the tournament 
     @n = @groups.count
     p "n = #{@n}"
-    draw_to_create = []
-    @all_draws = []
-    @fausses_routes = 0
-    @index_in_draw = 1
-    draws_maker_v3(allowed_combinations, draw_to_create, 0)
-    raise
+    draws_maker_v3
+
+    # Print
     @all_draws.each_with_index do |draw, ind|
       p "-----Draw n°#{ind}"
       draw.each_with_index do |match, ind|
         p "#{match[0].name}- #{match[1].name} "
       end
     end
-    raise
+    # Print end
   end
 
-  def self.draws_maker_v3(allowed_combinations,
-                          draw_to_create,
-                          current_index)
+  def self.draws_maker_v3()
     p "----------- draws_maker_v3 with draw_to_create:"
-    draw_to_create.each { |combination| p "#{combination[0].name}- #{combination[1].name} "}
-    p "and current_index: #{current_index}"
-    # current_index : Current index in the allowedCombinations array.
-    (current_index..allowed_combinations.count - 1).each do |index|
-      # test of combination. Are the teams in combination uniques? If they are, ad combination to draw to create
-      # raise if draw_to_create.count == 2
-      if (draw_to_create.flatten & allowed_combinations[index].flatten).none? # ([2, 6, 13, 99, 27] & [2, 6]).any?
-        draw_to_create << allowed_combinations[index]
-        if draw_to_create.count == @n
-          draw_to_create.each { |combination| p "#{combination[0].name} - #{combination[1].name} "}
-          p "*************Create Draw**************"
-          @all_draws << draw_to_create
-          if draw_to_create[0][0].name == "Chelsea"
-            draw_to_create.each { |combination| p "#{combination[0].name} - #{combination[1].name} "}
-            byebug
-          end
-          draw_to_create.pop
-        else
-          @index_in_draw += 1
-          draws_maker_v3(allowed_combinations, draw_to_create, current_index + 1)
-        end
-      else
-        p "Fausse route"
-        @fausses_routes += 1
-        byebug if @fausses_routes == 37330
+    @all_draws = @allowed_matches.combination(@n).to_a
+    p "@all_draws count #{@all_draws.count}"
+    @uniques_draws = @all_draws.select do |draw|
+      draw.flatten.count
+      draw.flatten.uniq.count
+      draw.flatten.count == draw.flatten.uniq.count
+    end
+    p "---------@uniques_draws count #{@uniques_draws.count}"
+    @uniques_draws.each_with_index do |draw, ind|
+      p "******* Draw n° #{ind} ********"
+      draw.each do |match|
+        p "#{match[0].name} - #{match[1].name}"
       end
     end
-    draw_to_create.pop
-    @index_in_draw -= 1
-    p "#{@index_in_draw}"
-    p "#{draw_to_create.count}"
-    # byebug
+    raise
+
   end
 end
+# nb_equipes_voulues = 3
+
+# teams = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map { |i| i.to_s }
+# matches =  teams.combination(2).to_a # ok
+# draws = matches.combination(3).to_a
+# p "draws #{draws.count}"
+# uniques_draws = draws.select do |draw|
+#   draw.flatten.count
+#   draw.flatten.uniq.count
+#   draw.flatten.count == draw.flatten.uniq.count
+# end
+
+# # draws = letters.combination(nb_lettres_voulues).to_a
+# uniques_draws.each do |draw|
+#   draw.each do |match|
+#     match
+#   end
+# end
+# p "all good draws count #{uniques_draws.count}"
+
