@@ -12,9 +12,9 @@ class Draw < ApplicationRecord
   end
 
   def self.draws_maker(tournament)
-    @tournament = Tournament.find(tournament.id) # params[:tournament_id])
-    destroy_draws(@tournament)
-    @groups = Group.where(tournament_id: @tournament.id)
+    tournament = Tournament.find(tournament.id) # params[:tournament_id])
+    destroy_draws(tournament)
+    @groups = Group.where(tournament_id: tournament.id)
     teams1 = []
     teams2 = []
     @groups.each do |group|
@@ -23,23 +23,21 @@ class Draw < ApplicationRecord
     end
     teams = teams1 + teams2
 
-    p 'permut:'
-    # @permut_num = 0 # num of valid permutations => draws
-    # @call_permutations_num = 0 # num of calling for permutations def
-    # @non_valid_permutations = 0 # Non_Valid permuts 
-
     p start = Time.now
     # permutations(@teams) # [1,2,3,4,5]) Version 1 de permut
     # matching(@teams1, @teams2)        Version 2 de permut
-    combining(teams, teams1, teams2)             # Version 3 de permut
+    uniques_draws = combining(teams, teams1, teams2)             # Version 3 de permut
+    draws_creation(uniques_draws, tournament)
+
     p "The end is coming....................."
     p start
     p Time.now
-    p "temps = #{Time.now - start} s"
-    p "nb de permut: #{@call_permutations_num}"
-    p ("Toutes permut #{@call_permutations_num}")
-    p ("Non_Valid permut #{@non_valid_permutations}")
-    p ("Draws #{@permut_num}")
+    p "temps = #{Time.now - start}"
+    p "@groups.count = #{@groups.count}"   
+    # p "nb de permut: #{call_permutations_num}"
+    # p ("Toutes permut #{call_permutations_num}")
+    # p ("Non_Valid permut #{non_valid_permutations}")
+    # p ("Draws #{permut_num}")
     # @draws = @teams.permutation.to_a
     p '--------------------'
     p 'finished!'
@@ -49,7 +47,7 @@ class Draw < ApplicationRecord
   def self.permutations(array, i=0) # testing all permutations
     # puts "this is i at the beginning: #{i}, this is the array size: #{array.size}"
     # p array if i == array.size
-    @call_permutations_num += 1
+    call_permutations_num += 1
 
     # if @call_permutations_num == 100
     #   raise
@@ -58,10 +56,10 @@ class Draw < ApplicationRecord
     (i..array.size - 1).each do |j|
       next if array[i].name == array[j].name
 
-      if @call_permutations_num == 500
-        p ("Toutes permut #{@call_permutations_num}")
-        p ("Non_Valid permut #{@non_valid_permutations}")
-        p ("Draws #{@permut_num}")
+      if call_permutations_num == 500
+        p ("Toutes permut #{call_permutations_num}")
+        p ("Non_Valid permut #{non_valid_permutations}")
+        p ("Draws #{permut_num}")
       end
 
       array[i], array[j] = array[j], array[i]
@@ -124,14 +122,16 @@ class Draw < ApplicationRecord
     true
   end
 
-  def self.draw_creation(array)
-    draw = Draw.create(tournament_id: @tournament.id)
-    name_ind = 0
+  def self.draws_creation(uniques_draws, tournament)
     names = %w(A B C D E F G H)
-    array.each_slice(2) do |pair|
-      name = names[name_ind]
-      name_ind += 1
-      p Match.create(draw_id: draw.id, team1_id: pair[0].id, team2_id: pair[1].id, name: name )
+    uniques_draws.each do |unique_draw|
+      draw = Draw.create(tournament_id: tournament.id)
+      name_ind = 0
+      unique_draw.each_with_index do |match, name_ind|
+        name = names[name_ind]
+        # name_ind += 1
+        p Match.create(draw_id: draw.id, team1_id: match[0].id, team2_id: match[1].id, name: name )
+      end
     end
   end
 
@@ -160,9 +160,8 @@ class Draw < ApplicationRecord
     # Create all combinaisons of "combinaison" with allowedCombinations.combinaison(n) where n is the number of matches per draw
     # n = number of groups in the tournament 
     n = @groups.count
-    p "n = #{@n}"
-    draws_maker_v3(allowed_matches, n,teams1)
-
+    p "n = #{n}"
+    return uniques_draws = draws_maker_v3(allowed_matches, n,teams1)
     # Print
     # @all_draws.each_with_index do |draw, ind|
     #   p "-----Draw n°#{ind}"
@@ -206,6 +205,7 @@ class Draw < ApplicationRecord
       #   p "#{match[0].name} - #{match[1].name}"
       # end
     end
+    return uniques_draws
   end
 
 

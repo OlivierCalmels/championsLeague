@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   resources :tournaments, only: [:index, :create, :destroy] do
     resources :groups, only: [:index, :show]
-    resources :draws, only: [:index, :show]
+    resources :draws, only: [:index, :show, :destroy_all] do
+      collection do
+        delete :destroy_all
+      end
+    end
   end
 end

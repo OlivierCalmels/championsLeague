@@ -5,9 +5,12 @@
   <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :true) do %> 
     <div class="btn btn-primary">Générer statistiques du tournois</div>
   <% end %>
-    <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :false) do %> 
+  <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :false) do %> 
     <div class="btn btn-primary">Mettre la page à jour</div>
   <% end %>
+<%=link_to destroy_all_tournament_draws_path(tournament_id: @tournament), data: {:confirm => 'Are you sure?'}, :method=> :delete do %>
+        <div class="btn btn-primary">Supprimer tout les tirages</div>
+    <% end %>
 
   <% @draws.each do |draw, matches| %>
     <div class="draw" style="display: flex; flex-direction: row">

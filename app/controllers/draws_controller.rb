@@ -10,12 +10,19 @@ class DrawsController < ApplicationController
       print("Heyyyyyyy")
       # destroy_draws print(@create_draws)
       Draw.draws_maker(@tournament)
-      # DrawsCreationJob.set(wait: 4.seconds).perform_later
+      # DrawsCreationJob.set(wait: 2.seconds).perform_later
     end
     @draws_ar = Draw.where(tournament_id: @tournament.id).limit(10)
     @draws_ar.each do |draw|
       matches = Match.where(draw_id: Draw.find(draw.id))
       @draws[draw] = matches
     end
+  end
+
+  def destroy_all
+    @tournament = Tournament.find(params[:tournament_id])
+    @draws = {}
+    Draw.destroy_draws(@tournament)
+    redirect_to tournament_draws_path
   end
 end
