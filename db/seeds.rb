@@ -235,10 +235,10 @@ p name = "G"
 p firstTeam = Team.find_by(name: "Juventus")
 p secondTeam = Team.find_by(name: "Barcelona")
 p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
-p name = "H"
-p firstTeam = Team.find_by(name: "PSG")
-p secondTeam = Team.find_by(name: "RB Leipzig")
-p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
+# p name = "H"
+# p firstTeam = Team.find_by(name: "PSG")
+# p secondTeam = Team.find_by(name: "RB Leipzig")
+# p Group.create(tournament_id: tournament.id, team1_id: firstTeam.id, team2_id: secondTeam.id, name: name )
 
 p "**********************"
 p "*** Draws (test) ****"

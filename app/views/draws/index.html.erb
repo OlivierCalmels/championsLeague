@@ -9,12 +9,12 @@
     <div class="btn btn-primary">Mettre la page à jour</div>
   <% end %>
 <%=link_to destroy_all_tournament_draws_path(tournament_id: @tournament), data: {:confirm => 'Are you sure?'}, :method=> :delete do %>
-        <div class="btn btn-primary">Supprimer tout les tirages</div>
+        <div class="btn btn-secondary">Supprimer tout les tirages</div>
     <% end %>
 
-  <% @draws.each do |draw, matches| %>
+  <% @draws.each_with_index do |(draw, matches), ind| %>
     <div class="draw" style="display: flex; flex-direction: row">
-      <h2 class="drawName" style="padding:30px"><%= draw.id %></h2>
+      <h2 class="drawName" style="padding:30px"><%= ind %></h2>
       <%matches.each do |match|  %>
         <div class="matches">
           <h2 class="macthName" style="text-align:center"><%= match.name %></h2>

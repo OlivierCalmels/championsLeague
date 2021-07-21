@@ -15,7 +15,7 @@ class DrawsController < ApplicationController
     @draws_ar = Draw.where(tournament_id: @tournament.id).limit(10)
     @draws_ar.each do |draw|
       matches = Match.where(draw_id: Draw.find(draw.id))
-      @draws[draw] = matches
+      @draws[draw] = matches # @draws is a hash with draws as key and matches as value
     end
   end
 
