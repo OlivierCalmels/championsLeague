@@ -1,9 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ChampionsLeague</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="author" content="Olivier Calmels" />
+
+        <!-- Primary Meta Tags -->
+        <title>Olivier Calmels - Resume</title>
+        <meta name="title" content="Champions League Stats">
+        <meta name="description" content="Discover all possible draws for the next champions league with our tool!">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://oliviercalmels.github.io/profile_olivier_calmels/">
+        <meta property="og:title" content="Champions League Stats">
+        <meta property="og:description" content="Discover all possible draws for the next champions league with our tool!">
+        <meta property="og:image" content="https://raw.githubusercontent.com/OlivierCalmels/profile_olivier_calmels/master/assets/img/preview.png">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://oliviercalmels.github.io/profile_olivier_calmels/">
+        <meta property="twitter:title" content="Champions League Stats">
+        <meta property="twitter:description" content="Discover all possible draws for the next champions league with our tool!">
+        <meta property="twitter:image" content="https://raw.githubusercontent.com/OlivierCalmels/profile_olivier_calmels/master/assets/img/preview.png">
+
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -11,6 +39,8 @@
 </head>
 
   <body>
+    <%= render 'shared/navbar' %>
     <%= yield %>
+    <%= render 'shared/footer' %>
   </body>
 </html>
