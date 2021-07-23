@@ -207,8 +207,6 @@ class Draw < ApplicationRecord
     end
     return uniques_draws
   end
-
-
 end
 # nb_equipes_voulues = 3
 

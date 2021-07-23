@@ -25,11 +25,10 @@ class DrawsController < ApplicationController
       # DrawsCreationJob.set(wait: 2.seconds).perform_later
     end
 
-    unless @team1.nil? || @team2.nil?
+    unless @team1.count.zero? || @team2.count.zero?
       print("Heyyyyyyy PROBA")
       # destroy_draws print(@create_draws)
-      Draw.probability(@tournament, team1, team2)
-      raise
+      @proba = probability(@tournament, @team1, @team2)
       # DrawsCreationJob.set(wait: 2.seconds).perform_later
     end
     @first_draw_id = Draw.where(tournament_id: @tournament.id).nil? ? nil : Draw.where(tournament_id: @tournament.id).first.id
@@ -45,5 +44,14 @@ class DrawsController < ApplicationController
     @draws = {}
     Draw.destroy_draws(@tournament)
     redirect_to tournament_draws_path
+  end
+
+  def probability(tournament, team1, team2)
+    all_draws = Draw.where(tournament_id: @tournament.id) || 0
+    all_draws_count = all_draws.count
+    # good_draws = all_draws.where(team1_id: team1.id)
+    # good_draws = Draws.Matches.all
+    return "Coucou"
+
   end
 end
