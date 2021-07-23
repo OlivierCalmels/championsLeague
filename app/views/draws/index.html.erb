@@ -1,6 +1,6 @@
 <div class="container">
   <div class="banner">
-    <h1>Liste des tirages possibles pour la phase finale de la ligue des champions <%= @tournament.name %></h1>
+    <h1>Quelles chances ont deux équipes de se rencontrer après les poules en <%= @tournament.name %></h1>
   </div>
   <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :true) do %> 
     <div class="btn btn-primary">Générer statistiques du tournois</div>
@@ -8,29 +8,34 @@
   <%= link_to tournament_draws_path(tournament_id: @tournament, create_draws: :false) do %> 
     <div class="btn btn-primary">Mettre la page à jour</div>
   <% end %>
-<%=link_to destroy_all_tournament_draws_path(tournament_id: @tournament), data: {:confirm => 'Are you sure?'}, :method=> :delete do %>
+  <%=link_to destroy_all_tournament_draws_path(tournament_id: @tournament), data: {:confirm => 'Are you sure?'}, :method=> :delete do %>
         <div class="btn btn-secondary">Supprimer tout les tirages</div>
     <% end %>
+  
+  <h2>Liste de tout les tirages possibles de ce tournois</h2>
 
-  <% @draws.each_with_index do |(draw, matches), ind| %>
-    <div class="draw" style="display: flex; flex-direction: row">
-      <h2 class="drawName" style="padding:30px"><%= ind %></h2>
-      <%matches.each do |match|  %>
-        <div class="matches">
-          <h2 class="macthName" style="text-align:center"><%= match.name %></h2>
-          <ul>
-            <li>
-            <%=match.team1.name%>
-            <%# <%=match.team1.country%>
-            </li>
-            <li>
-            <%=match.team2.name%>
-            <%# <%=match.team2.country%>
-            </li>
-          </ul>
-        </div>
-      <%end%>
-    </div>
-  <% end %>
+    <%= will_paginate @draws_ar, :style => 'margin-top:5px;height:30px;' %>
+
+    <% @draws.each_with_index do |(draw, matches), ind| %>
+      <div class="draw" style="display: flex; flex-direction: row">
+        <h2 class="drawName" style="padding:30px"><%= ind + 1 %></h2>
+        <%matches.each do |match|  %>
+          <div class="matches">
+            <h2 class="macthName" style="text-align:center"><%= match.name %></h2>
+            <ul>
+              <li>
+              <%=match.team1.name%>
+              <%# <%=match.team1.country%>
+              </li>
+              <li>
+              <%=match.team2.name%>
+              <%# <%=match.team2.country%>
+              </li>
+            </ul>
+          </div>
+        <%end%>
+      </div>
+    <% end %>
+    <%= will_paginate @draws_ar, :style => 'float:right;margin-top:-5px;height:30px;' %>
 </div>
 

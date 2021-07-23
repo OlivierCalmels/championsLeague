@@ -5,14 +5,15 @@ class DrawsController < ApplicationController
     @tournament = Tournament.find(params[:tournament_id])
     @create_draws = params[:create_draws] || false
     @draws = {}
-    print(@create_draws)
+    @per_page = params[:per_page] || 10
+    # print(@create_draws)
     if @create_draws == "true"
       print("Heyyyyyyy")
       # destroy_draws print(@create_draws)
       Draw.draws_maker(@tournament)
       # DrawsCreationJob.set(wait: 2.seconds).perform_later
     end
-    @draws_ar = Draw.where(tournament_id: @tournament.id).limit(10)
+    @draws_ar = Draw.where(tournament_id: @tournament.id).paginate(:per_page => @per_page, :page => params[:page]) #.limit(10)
     @draws_ar.each do |draw|
       matches = Match.where(draw_id: Draw.find(draw.id))
       @draws[draw] = matches # @draws is a hash with draws as key and matches as value
