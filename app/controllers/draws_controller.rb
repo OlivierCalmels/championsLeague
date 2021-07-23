@@ -10,6 +10,8 @@ class DrawsController < ApplicationController
     @teams1 = []
     @teams2 = []
     @teams = []
+    @team1 = Team.where(name: params[:team1])
+    @team2 = Team.where(name: params[:team2])
     @groups.each do |group|
       @teams1 << group.team1.name
       @teams2 << group.team2.name
@@ -22,13 +24,20 @@ class DrawsController < ApplicationController
       Draw.draws_maker(@tournament)
       # DrawsCreationJob.set(wait: 2.seconds).perform_later
     end
-    @first_draw_id = Draw.where(tournament_id: @tournament.id).first.id
-    @draws_ar = Draw.where(tournament_id: @tournament.id).paginate(:per_page => @per_page, :page => params[:page]) #.limit(10)
+
+    unless @team1.nil? || @team2.nil?
+      print("Heyyyyyyy PROBA")
+      # destroy_draws print(@create_draws)
+      Draw.probability(@tournament, team1, team2)
+      raise
+      # DrawsCreationJob.set(wait: 2.seconds).perform_later
+    end
+    @first_draw_id = Draw.where(tournament_id: @tournament.id).nil? ? nil : Draw.where(tournament_id: @tournament.id).first.id
+    @draws_ar = Draw.where(tournament_id: @tournament.id).paginate(per_page: @per_page, page: params[:page]) # .limit(10)
     @draws_ar.each do |draw|
       matches = Match.where(draw_id: Draw.find(draw.id))
       @draws[draw] = matches # @draws is a hash with draws as key and matches as value
     end
-    
   end
 
   def destroy_all

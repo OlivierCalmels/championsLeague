@@ -14,18 +14,17 @@
 
 
   <div class="p-3">
-  <%= form_with url: "/search", method: :get do |form| %>
+  <%= form_with(method: :get, url: tournament_draws_path(tournament_id: @tournament), local: true) do |form| %>
     <%= form.label :query, "Equipe 1" %>
-    <%= form.select :city, @teams, selected: @teams.first %>
+    <%= form.select :team1, @teams, selected: @teams.first %>
     <%= form.label :query, "Equipe 2" %>
-    <%= form.select :city, @teams, selected: @teams.last %>
+    <%= form.select :team2, @teams, selected: @teams.last %>
     <%= form.submit "Chercher la probabilité" %>
   <% end %>
-  
+
   </div>
   
   <h2>Liste de tout les tirages possibles de ce tournois</h2>
-  <%=@first_draw_id%>
 
     <%= will_paginate @draws_ar, :style => 'margin-top:25px;height:30px;' %>
 
