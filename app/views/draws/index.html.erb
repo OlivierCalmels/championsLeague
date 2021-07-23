@@ -11,14 +11,27 @@
   <%=link_to destroy_all_tournament_draws_path(tournament_id: @tournament), data: {:confirm => 'Are you sure?'}, :method=> :delete do %>
         <div class="btn btn-secondary">Supprimer tout les tirages</div>
     <% end %>
+
+
+  <div class="p-3">
+  <%= form_with url: "/search", method: :get do |form| %>
+    <%= form.label :query, "Equipe 1" %>
+    <%= form.select :city, @teams, selected: @teams.first %>
+    <%= form.label :query, "Equipe 2" %>
+    <%= form.select :city, @teams, selected: @teams.last %>
+    <%= form.submit "Chercher la probabilité" %>
+  <% end %>
+  
+  </div>
   
   <h2>Liste de tout les tirages possibles de ce tournois</h2>
+  <%=@first_draw_id%>
 
-    <%= will_paginate @draws_ar, :style => 'margin-top:5px;height:30px;' %>
+    <%= will_paginate @draws_ar, :style => 'margin-top:25px;height:30px;' %>
 
     <% @draws.each_with_index do |(draw, matches), ind| %>
       <div class="draw" style="display: flex; flex-direction: row">
-        <h2 class="drawName" style="padding:30px"><%= ind + 1 %></h2>
+        <h2 class="drawName" style="padding:30px"><%= draw.id - @first_draw_id + 1 %></h2>
         <%matches.each do |match|  %>
           <div class="matches">
             <h2 class="macthName" style="text-align:center"><%= match.name %></h2>
