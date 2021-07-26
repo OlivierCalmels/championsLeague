@@ -3,9 +3,9 @@ class Draw < ApplicationRecord
   has_many :matches
 
   def self.destroy_draws(tournament)
-    p draws = Draw.where(tournament_id: tournament.id) # params[:tournament_id])
+    p draws = Draw.where('tournament_id = ?', tournament.id) # params[:tournament_id])
     draws.each do |draw|
-      p matches = Match.where(draw_id: draw.id)
+      p matches = Match.where('draw_id = ?', draw.id)
       p matches.destroy_all
       draw.destroy
     end
@@ -14,7 +14,7 @@ class Draw < ApplicationRecord
   def self.draws_maker(tournament)
     tournament = Tournament.find(tournament.id) # params[:tournament_id])
     destroy_draws(tournament)
-    @groups = Group.where(tournament_id: tournament.id)
+    @groups = Group.where('tournament_id = ?', tournament.id)
     teams1 = []
     teams2 = []
     @groups.each do |group|
@@ -114,8 +114,8 @@ class Draw < ApplicationRecord
     return false if first_team.country == second_team.country
 
     # Are first and second teams from different groups?
-    team1_group = @groups.where(team1_id: first_team.id).or(@groups.where(team2_id: first_team.id))
-    team2_group = @groups.where(team1_id: second_team.id).or(@groups.where(team2_id: second_team.id))
+    team1_group = @groups.where('team1_id =?', first_team.id).or(@groups.where('team2_id =?', first_team.id))
+    team2_group = @groups.where('team1_id =?', second_team.id).or(@groups.where('team2_id =?', second_team.id))
 
     return false if team1_group.ids == team2_group.ids
 
