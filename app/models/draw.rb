@@ -26,7 +26,7 @@ class Draw < ApplicationRecord
     p start = Time.now
     # permutations(@teams) # [1,2,3,4,5]) Version 1 de permut
     # matching(@teams1, @teams2)        Version 2 de permut
-    uniques_draws = combining(teams, teams1, teams2)             # Version 3 de permut
+    uniques_draws = combining(teams, teams1, teams2) # Version 3 de permut
     draws_creation(uniques_draws, tournament)
 
     p "The end is coming....................."
