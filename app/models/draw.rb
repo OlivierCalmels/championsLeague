@@ -1,3 +1,4 @@
+# Draw model
 class Draw < ApplicationRecord
   belongs_to :tournament
   has_many :matches
@@ -26,14 +27,14 @@ class Draw < ApplicationRecord
     p start = Time.now
     # permutations(@teams) # [1,2,3,4,5]) Version 1 de permut
     # matching(@teams1, @teams2)        Version 2 de permut
-    uniques_draws = combining(teams, teams1, teams2)             # Version 3 de permut
+    uniques_draws = combining(teams, teams1, teams2) # Version 3 de permut
     draws_creation(uniques_draws, tournament)
 
-    p "The end is coming....................."
+    p 'The end is coming.....................'
     p start
     p Time.now
     p "temps = #{Time.now - start}"
-    p "@groups.count = #{@groups.count}"   
+    p "@groups.count = #{@groups.count}"
     # p "nb de permut: #{call_permutations_num}"
     # p ("Toutes permut #{call_permutations_num}")
     # p ("Non_Valid permut #{non_valid_permutations}")
@@ -57,9 +58,9 @@ class Draw < ApplicationRecord
       next if array[i].name == array[j].name
 
       if call_permutations_num == 500
-        p ("Toutes permut #{call_permutations_num}")
-        p ("Non_Valid permut #{non_valid_permutations}")
-        p ("Draws #{permut_num}")
+        p "Toutes permut #{call_permutations_num}"
+        p "Non_Valid permut #{non_valid_permutations}"
+        p "Draws #{permut_num}"
       end
 
       array[i], array[j] = array[j], array[i]
@@ -206,6 +207,23 @@ class Draw < ApplicationRecord
       # end
     end
     return uniques_draws
+  end
+
+  def self.probability(tournament, team1, team2)
+    # All draws of this tournament
+    all_draws = Draw.where('tournament_id = ?', tournament.id) || 0
+    all_draws_count = all_draws.count
+    p "Tournament id :#{tournament.id}"
+
+    # All draws of this tournament witch a match between the selected teams
+    # all_draws_2 = tournament.draws
+    good_matches = tournament.matches.where(team1_id: team1.id, team2_id: team2.id)
+    good_matches_count = good_matches.count
+    prob = ((good_matches_count.to_f / all_draws_count.to_f) * 100).round
+    prob = [all_draws_count,
+     good_matches,
+     good_matches_count, prob]
+    # raise
   end
 end
 # nb_equipes_voulues = 3
