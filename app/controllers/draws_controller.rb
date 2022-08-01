@@ -18,8 +18,8 @@ class DrawsController < ApplicationController
     @team1 = Team.find_by('name = ?', params[:team1])
     @team2 = Team.find_by('name = ?', params[:team2])
 
-    @proba = ""
-    
+    @proba = ''
+
     @groups.each do |group|
       @teams1 << group.team1.name
       @teams2 << group.team2.name
@@ -28,16 +28,18 @@ class DrawsController < ApplicationController
     @teams = @teams1 + @teams2
 
     # print(@create_draws)
-    if @create_draws == "true"
+    if @create_draws == 'true'
       # destroy_draws print(@create_draws)
       Draw.draws_maker(@tournament)
       # DrawsCreationJob.set(wait: 2.seconds).perform_later
     end
 
-    @first_draw_id = Draw.where('tournament_id = ?', @tournament.id).count.zero? ?
-                                nil :
-                                Draw.where('tournament_id = ?',  @tournament.id).first.id
-    @draws_ar = Draw.where('tournament_id = ?',  @tournament.id)
+    @first_draw_id = if Draw.where('tournament_id = ?', @tournament.id).count.zero?
+                       nil
+                     else
+                       Draw.where('tournament_id = ?', @tournament.id).first.id
+                     end
+    @draws_ar = Draw.where('tournament_id = ?', @tournament.id)
                     .paginate(per_page: @per_page, page: params[:page]) # .limit(10)
     @draws_ar.each do |draw|
       matches = Match.where('draw_id = ?', Draw.find(draw.id))
@@ -57,6 +59,4 @@ class DrawsController < ApplicationController
     Draw.destroy_draws(@tournament)
     redirect_to tournament_draws_path
   end
-
-
 end

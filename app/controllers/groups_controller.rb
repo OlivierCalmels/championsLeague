@@ -1,5 +1,6 @@
-class GroupsController < ApplicationController
+# frozen string litteral: true
 
+class GroupsController < ApplicationController
   def index
     @tournament = Tournament.find(params[:tournament_id])
     @groups = Group.where('tournament_id = ?', @tournament.id)
