@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Draw model
 class Draw < ApplicationRecord
   belongs_to :tournament
@@ -45,7 +47,8 @@ class Draw < ApplicationRecord
     p '--------------------'
   end
 
-  def self.permutations(array, i=0) # testing all permutations
+  # testing all permutations
+  def self.permutations(array, i = 0)
     # puts "this is i at the beginning: #{i}, this is the array size: #{array.size}"
     # p array if i == array.size
     call_permutations_num += 1
@@ -107,7 +110,8 @@ class Draw < ApplicationRecord
     end
   end
 
-  def self.valid_matches?(first_team, second_team, teams1, teams2, i = 2) # array, i)
+  # array, i)
+  def self.valid_matches?(first_team, second_team, teams1, teams2, _i = 2)
     return false unless teams1.include?(first_team)
     return false unless teams2.include?(second_team)
 
@@ -124,25 +128,24 @@ class Draw < ApplicationRecord
   end
 
   def self.draws_creation(uniques_draws, tournament)
-    names = %w(A B C D E F G H)
+    names = %w[A B C D E F G H]
     uniques_draws.each do |unique_draw|
       draw = Draw.create(tournament_id: tournament.id)
       name_ind = 0
       unique_draw.each_with_index do |match, name_ind|
         name = names[name_ind]
         # name_ind += 1
-        p Match.create(draw_id: draw.id, team1_id: match[0].id, team2_id: match[1].id, name: name )
+        p Match.create(draw_id: draw.id, team1_id: match[0].id, team2_id: match[1].id, name: name)
       end
     end
   end
 
-# -----------------------------------
-  def self.matching(teams1, teams2) # alternative to permutation by iterating in array of teams
+  # -----------------------------------
+  # alternative to permutation by iterating in array of teams
+  def self.matching(teams1, teams2)
     teams1.each do |team1|
       teams2.each do |team2|
-        if valid_matches?(team1, team2, teams1, teams2)
-          p team1, team2
-        end
+        p team1, team2 if valid_matches?(team1, team2, teams1, teams2)
       end
     end
   end
@@ -153,16 +156,16 @@ class Draw < ApplicationRecord
     all_matches = teams.combination(2).to_a
     # allCombinations.each {|combination| p "#{combination[0].name} - #{combination[1].name}"}
     # eliminate forbidden combinations, create array with all matches
-    allowed_matches = all_matches.select { |match| valid_matches?(match[0], match[1],teams1, teams2) }
-    p "Allowed combinations :limit => size #By default SQL String limit 255 character 
+    allowed_matches = all_matches.select { |match| valid_matches?(match[0], match[1], teams1, teams2) }
+    p "Allowed combinations :limit => size #By default SQL String limit 255 character
       #Ex:- :limit => 40"
-    allowed_matches.each {|match| p "#{match[0].name} - #{match[1].name}"}
+    allowed_matches.each { |match| p "#{match[0].name} - #{match[1].name}" }
     # create draws
     # Create all combinaisons of "combinaison" with allowedCombinations.combinaison(n) where n is the number of matches per draw
-    # n = number of groups in the tournament 
+    # n = number of groups in the tournament
     n = @groups.count
     p "n = #{n}"
-    return uniques_draws = draws_maker_v3(allowed_matches, n,teams1)
+    uniques_draws = draws_maker_v3(allowed_matches, n, teams1)
     # Print
     # @all_draws.each_with_index do |draw, ind|
     #   p "-----Draw n°#{ind}"
@@ -174,39 +177,36 @@ class Draw < ApplicationRecord
   end
 
   def self.find_uniques_draws(all_draws)
-      uniques_draws = all_draws.select do |draw|
+    all_draws.select do |draw|
       # draw.flatten.count
       # draw.flatten.uniq.count
       draw.flatten.count == draw.flatten.uniq.count
     end
-    return uniques_draws
   end
 
   def self.select_first_team(all_draws, teams1)
-    draws_good_first_team = all_draws.select do |draw|
+    all_draws.select do |draw|
       results = draw.each_with_index.map do |match, ind|
-      match[0] == teams1[ind]
+        match[0] == teams1[ind]
       end
-      results.all?{|result| result == true}
+      results.all? { |result| result == true }
     end
-    return draws_good_first_team
   end
-  
 
   def self.draws_maker_v3(allowed_matches, n, teams1)
-    p "----------- draws_maker_v3 with draw_to_create:"
+    p '----------- draws_maker_v3 with draw_to_create:'
     all_draws = allowed_matches.combination(n).to_a
     p "all_draws count #{all_draws.count}"
     draws_good_first_team = select_first_team(all_draws, teams1)
     uniques_draws = find_uniques_draws(draws_good_first_team)
     p "---------@uniques_draws count #{uniques_draws.count}"
-    uniques_draws.first(100).each_with_index do |draw, ind|
+    uniques_draws.first(100).each_with_index do |_draw, ind|
       p "******* Draw n° #{ind} ********"
       # draw.each do |match|
       #   p "#{match[0].name} - #{match[1].name}"
       # end
     end
-    return uniques_draws
+    uniques_draws
   end
 
   def self.probability(tournament, team1, team2)
@@ -221,8 +221,8 @@ class Draw < ApplicationRecord
     good_matches_count = good_matches.count
     prob = ((good_matches_count.to_f / all_draws_count.to_f) * 100).round
     prob = [all_draws_count,
-     good_matches,
-     good_matches_count, prob]
+            good_matches,
+            good_matches_count, prob]
     # raise
   end
 end
@@ -245,4 +245,3 @@ end
 #   end
 # end
 # p "all good draws count #{uniques_draws.count}"
-

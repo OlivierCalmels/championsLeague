@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DrawsCreationJob < ApplicationJob
   # include Sidekiq
   queue_as :default

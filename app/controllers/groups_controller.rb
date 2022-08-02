@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # frozen string litteral: true
 
 class GroupsController < ApplicationController

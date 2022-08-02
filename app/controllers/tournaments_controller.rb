@@ -1,5 +1,6 @@
-class TournamentsController < ApplicationController
+# frozen_string_literal: true
 
+class TournamentsController < ApplicationController
   def index
     @tournaments = Tournament.all
   end
@@ -9,5 +10,4 @@ class TournamentsController < ApplicationController
     @tournament.destroy
     redirect_to tournaments_path
   end
-
 end
