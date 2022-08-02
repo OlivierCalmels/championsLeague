@@ -1,3 +1,4 @@
-example_id                                                  | status | run_time        |
------------------------------------------------------------ | ------ | --------------- |
-./spec/domains/draws/use_cases/compute_draws_spec.rb[1:1:1] | passed | 0.01275 seconds |
+example_id                                                                 | status | run_time        |
+-------------------------------------------------------------------------- | ------ | --------------- |
+./spec/domains/draws/infrastructure/tournament_repository_spec.rb[1:1:1:1] | failed | 0.10618 seconds |
+./spec/domains/draws/use_cases/compute_draws_spec.rb[1:1:1]                | passed | 0.01275 seconds |
