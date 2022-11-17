@@ -4,7 +4,7 @@ module Draws
   module UseCases
     # This class is responsible for computing the draws of a tournament
     class ComputeDraws
-      
+
       def initialize(draw_repository: 'DrawRepository.new')
         @draw_repository = draw_repository
         @draw_generator = 'DrawGenerator.new'
