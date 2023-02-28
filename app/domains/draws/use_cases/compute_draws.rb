@@ -6,10 +6,13 @@ module Draws
     class ComputeDraws
       def initialize(draw_repository: 'DrawRepository.new')
         @draw_repository = draw_repository
-        @draw_generator = 'DrawGenerator.new'
+        @draw_generator = DomainLogic::DrawGenerator.new
+        @tournament_repository = Infrastructure::TournamentRepository.new
       end
 
       def call(tournament_id:)
+        tournament = @tournament_repository.by_id(tournament_id)
+        @draw_generator.call(tournament: tournament)
         # teams = tournament.teams
         # "FooBar #{tournament_id}"
       end
