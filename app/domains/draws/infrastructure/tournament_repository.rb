@@ -4,7 +4,7 @@ module Draws
   module Infrastructure
     class TournamentRepository
       def by_id(id)
-        debugger
+        # debugger
         tournament = Tournament.includes(groups: %i[team1 team2]).find(id)
 
         # groups = Group.where(tournament_id: id)
