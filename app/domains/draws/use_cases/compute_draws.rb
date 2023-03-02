@@ -11,6 +11,7 @@ module Draws
       end
 
       def call(tournament_id:)
+        debugger
         tournament = @tournament_repository.by_id(tournament_id)
         @draw_generator.call(tournament: tournament)
         # teams = tournament.teams
