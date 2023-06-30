@@ -7,32 +7,9 @@ module Draws
 
       def call(tournament:)
         teams = teams_for(tournament: tournament)
+        generate_draws(teams)
 
         # ------Sandbox------
-        teams = (1..4).to_a
-        debugger
-        number_of_matches_per_draw = teams.count / 2
-        all_matches = teams.combination(2).to_a
-        # [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]
-        all_draws = all_matches.combination(number_of_matches_per_draw).to_a
-        # [
-        #  [[1, 2], [1, 3]],
-        #  [[1, 2], [1, 4]],
-        #  [[1, 2], [2, 3]],
-        #  [[1, 2], [2, 4]],
-        #  [[1, 2], [3, 4]],
-        #  [[1, 3], [1, 4]],
-        #  [[1, 3], [2, 3]],
-        #  [[1, 3], [2, 4]],
-        #  [[1, 3], [3, 4]],
-        #  [[1, 4], [2, 3]],
-        #  [[1, 4], [2, 4]],
-        #  [[1, 4], [3, 4]],
-        #  [[2, 3], [2, 4]],
-        #  [[2, 3], [3, 4]],
-        #  [[2, 4], [3, 4]]
-        # ]
-        # ##############
       end
 
       private
@@ -47,6 +24,35 @@ module Draws
           ]
         end
         teams.flatten
+      end
+
+      def generate_draws(teams)
+        teams = (1..4).to_a
+        number_of_matches_per_draw = teams.count / 2
+        # teams.permutation.to_a
+        # teams.permutation.map{|draw| draw.each_slice(2).to_a}.to_a
+        # debugger
+        all_draws = teams
+                      .permutation
+                      .map do |draw|
+                        draw.each_slice(2)
+                        .to_a
+                        .map do |match|
+                          match.sort
+                        end
+                        .sort
+                      end
+                      .uniq
+        
+                      # [
+                      #  [[1, 2],
+                      #  [3, 4]],
+                      #  [[1, 3],
+                      #  [2, 4]],
+                      #  [[1, 4],
+                      #  [2, 3]]
+                      # ]
+      
       end
     end
   end

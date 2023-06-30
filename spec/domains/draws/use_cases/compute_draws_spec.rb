@@ -29,9 +29,20 @@ module Draws
       describe '#call' do
         subject { instance.call(tournament_id: tournament.id) }
 
-        it "should return 'FooBar' " do
+        it "should return the right draws " do
           # debugger
-          expect(subject).to eq('FooBar 1')
+          expect(subject).to match_array(
+            [
+              [
+                [1, 2], [3, 4]
+              ],
+              [
+                [1, 3], [2, 4]
+              ], 
+              [ [1, 4], [2, 3]
+              ]
+            ]
+            )
         end
       end
     end

@@ -41,6 +41,12 @@ gem 'dotenv-rails' # On ajoute cette gem pour gérer les variables d'environemen
 
 gem 'psych', '< 4'
 
+gem 'solargraph'
+
+gem 'net-smtp', require: false
+gem 'net-imap', require: false
+gem 'net-pop', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

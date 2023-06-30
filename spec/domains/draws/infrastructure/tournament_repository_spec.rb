@@ -19,7 +19,7 @@ module Draws
 
         context 'when id is 1' do
           let(:id) { 1 }
-          it "should return the good tournament' " do
+          it "should return the right tournament' " do
             expect(subject).to eq(tournament)
           end
         end
