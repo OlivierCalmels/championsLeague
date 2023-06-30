@@ -1,4 +1,10 @@
 {
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "solargraph.bundlerPath": ".app/bin/bundle",
+  "solargraph.commandPath": ".app/bin/solargraph",
+  "solargraph.diagnostics": true,
+  "solargraph.formatting": true,
   "name": "championsLeague",
   "private": true,
   "dependencies": {
@@ -14,5 +20,9 @@
   "version": "0.1.0",
   "devDependencies": {
     "webpack-dev-server": "^3.11.0"
+  },
+
+  "[ruby]": {
+    "editor.defaultFormatter": "castwide.solargraph"
   }
 }
