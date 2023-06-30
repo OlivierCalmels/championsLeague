@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# require 'simplecov'
+# SimpleCov.start('rails') do
+#   add_group 'API v1', 'app/controllers/api/v1'
+#   add_group 'API v0', 'app/controllers/api/v0'
+#   add_group 'Services', 'app/services'
+#   add_group 'Domains', 'app/domains'
+#   add_group 'Serializers', 'app/serializers'
+#   add_group 'Contracts', 'app/contracts'
+#   add_group 'Transformers', 'app/transformers'
+#   add_group 'Policies', 'app/policies'
+#   add_group 'Errors', 'app/errors'
+# end
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 
