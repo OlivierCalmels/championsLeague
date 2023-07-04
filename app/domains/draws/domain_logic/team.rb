@@ -3,7 +3,7 @@
 module Draws
   module DomainLogic
     class Team
-      # attr_accessor :database_id, :name, :country, :group_id, :placement
+      attr_accessor :database_id #, :name, :country, :group_id, :placement
 
       def initialize(database_id:, name:, country:, group_id:, placement:)
         @database_id = database_id

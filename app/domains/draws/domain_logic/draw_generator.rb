@@ -6,16 +6,13 @@ module Draws
       def initialize; end
 
       def call(tournament:)
-        teams = teams_for(tournament: tournament)
+        teams = team_for(tournament: tournament)
         generate_draws(teams)
-
-           # ------Sandbox------
       end
 
       private
 
-      def teams_for(tournament:)
-        # debugger
+      def team_for(tournament:)
         groups = tournament.groups
         teams = groups.map do |group|
           [
@@ -27,18 +24,28 @@ module Draws
       end
 
       def generate_draws(teams)
-        teams = (1..4).to_a
+        # teams = (1..8).to_a
+        number_of_teams=teams.count
         number_of_matches_per_draw = teams.count / 2
+        teams_per_match = 2
+        # binding.pry
+
         all_draws = teams
                       .permutation
+                      .map { |permutation| permutation.each_slice(teams_per_match) }
                       .map do |draw|
-                        draw.each_slice(2)
-                        .map do |match|
-                          match.sort
+                        draw.map do |match|
+                          match.sort_by(&:database_id)
+                        end.sort! do |match1, match2|
+                          match1.first.database_id <=>match2.first.database_id
                         end
-                        .sort
                       end
-                      .uniq      
+                      .uniq   
+                    # [[[1,2], [3,4]], [[1,3], [2,4]]]  
+                      
+
+
+
       end
     end
   end
