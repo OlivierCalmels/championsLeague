@@ -26,16 +26,16 @@ module Draws
         Group.create!(tournament: tournament, name: 'My group 2', team1: team21, team2: team22)
       end
 
-      # let(:team31) { Team.create!(name: 'My team 31', country: country1) }
-      # let(:team32) { Team.create!(name: 'My team 32', country: country1) }
-      # let!(:group3) do
-      #   Group.create!(tournament: tournament, name: 'My group 3', team1: team31, team2: team32)
-      # end
-      # let(:team41) { Team.create!(name: 'My team 41', country: country1) }
-      # let(:team42) { Team.create!(name: 'My team 42', country: country1) }
-      # let!(:group4) do
-      #   Group.create!(tournament: tournament, name: 'My group 4', team1: team41, team2: team42)
-      # end
+      let(:team31) { Team.create!(name: 'My team 31', country: country1) }
+      let(:team32) { Team.create!(name: 'My team 32', country: country1) }
+      let!(:group3) do
+        Group.create!(tournament: tournament, name: 'My group 3', team1: team31, team2: team32)
+      end
+      let(:team41) { Team.create!(name: 'My team 41', country: country1) }
+      let(:team42) { Team.create!(name: 'My team 42', country: country1) }
+      let!(:group4) do
+        Group.create!(tournament: tournament, name: 'My group 4', team1: team41, team2: team42)
+      end
 
       # let(:team51) { Team.create!(name: 'My team 51', country: country1) }
       # let(:team52) { Team.create!(name: 'My team 52', country: country1) }
@@ -79,6 +79,22 @@ module Draws
             )
         end
       end
+
+      # describe '#list_same_group' do
+      #   subject { instance.list_same_group(teams2_permutations) }
+
+      #   let(:teams2_permutations) { (1..4).to_a.permutation.to_a }
+
+      #   it "sould return the right list of permutation" do
+      #     binding.pry
+      #     expect(subject).to eq(
+      #       [
+      #         1,2,3,4,5,6
+      #       ]
+      #     )
+      #   end
+
+      # end
     end
   end
 end
