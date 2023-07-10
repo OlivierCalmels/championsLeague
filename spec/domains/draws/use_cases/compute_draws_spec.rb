@@ -14,67 +14,88 @@ module Draws
       end
 
       let(:country1) { 'France' }
+      let(:country2) { 'Angleterre' }
+      let(:country3) { 'Allemagne' }
+      let(:country4) { 'Italie' }
+      let(:country5) { 'Portugal' }
+      let(:country6) { 'Belgique' }
+      let(:country7) { 'Espagne' }
+      
 
-      let(:team11) { Team.create!(name: 'My team 11', country: country1) }
-      let(:team12) { Team.create!(name: 'My team 12', country: country1) }
+      let(:team11) { Team.create!(name: 'Chelsea', country: country2) }
+      let(:team12) { Team.create!(name: 'Milan AC', country: country4) }
       let!(:group1) do
         Group.create!(tournament: tournament, name: 'My group 1', team1: team11, team2: team12)
       end
-      let(:team21) { Team.create!(name: 'My team 21', country: country1) }
-      let(:team22) { Team.create!(name: 'My team 22', country: country1) }
+      let(:team21) { Team.create!(name: 'Real Madrid', country: country7) }
+      let(:team22) { Team.create!(name: 'RB Leipzig', country: country3) }
       let!(:group2) do
         Group.create!(tournament: tournament, name: 'My group 2', team1: team21, team2: team22)
       end
 
-      let(:team31) { Team.create!(name: 'My team 31', country: country1) }
-      let(:team32) { Team.create!(name: 'My team 32', country: country1) }
+      let(:team31) { Team.create!(name: 'Manchester City', country: country2) }
+      let(:team32) { Team.create!(name: 'Dortmund', country: country3) }
       let!(:group3) do
         Group.create!(tournament: tournament, name: 'My group 3', team1: team31, team2: team32)
       end
-      let(:team41) { Team.create!(name: 'My team 41', country: country1) }
-      let(:team42) { Team.create!(name: 'My team 42', country: country1) }
+      let(:team41) { Team.create!(name: 'Benfica', country: country5) }
+      let(:team42) { Team.create!(name: 'PSG', country: country1) }
       let!(:group4) do
         Group.create!(tournament: tournament, name: 'My group 4', team1: team41, team2: team42)
       end
 
-      # let(:team51) { Team.create!(name: 'My team 51', country: country1) }
-      # let(:team52) { Team.create!(name: 'My team 52', country: country1) }
-      # let!(:group5) do
-      #   Group.create!(tournament: tournament, name: 'My group 5', team1: team51, team2: team52)
-      # end
-      # let(:team61) { Team.create!(name: 'My team 61', country: country1) }
-      # let(:team62) { Team.create!(name: 'My team 62', country: country1) }
-      # let!(:group6) do
-      #   Group.create!(tournament: tournament, name: 'My group 6', team1: team61, team2: team62)
-      # end
+      let(:team51) { Team.create!(name: 'Naples', country: country4) }
+      let(:team52) { Team.create!(name: 'Liverpool', country: country2) }
+      let!(:group5) do
+        Group.create!(tournament: tournament, name: 'My group 5', team1: team51, team2: team52)
+      end
+      let(:team61) { Team.create!(name: 'Porto', country: country5) }
+      let(:team62) { Team.create!(name: 'Bruges', country: country6) }
+      let!(:group6) do
+        Group.create!(tournament: tournament, name: 'My group 6', team1: team61, team2: team62)
+      end
 
-      # let(:team71) { Team.create!(name: 'My team 71', country: country1) }
-      # let(:team72) { Team.create!(name: 'My team 72', country: country1) }
-      # let!(:group7) do
-      #   Group.create!(tournament: tournament, name: 'My group 7', team1: team71, team2: team72)
-      # end
-      # let(:team81) { Team.create!(name: 'My team 81', country: country1) }
-      # let(:team82) { Team.create!(name: 'My team 82', country: country1) }
-      # let!(:group8) do
-      #   Group.create!(tournament: tournament, name: 'My group 8', team1: team81, team2: team82)
-      # end
+      let(:team71) { Team.create!(name: 'Bayern Munich', country: country3) }
+      let(:team72) { Team.create!(name: 'Inter Milan', country: country4) }
+      let!(:group7) do
+        Group.create!(tournament: tournament, name: 'My group 7', team1: team71, team2: team72)
+      end
+      let(:team81) { Team.create!(name: 'Tottenham', country: country2) }
+      let(:team82) { Team.create!(name: 'Francfort', country: country3) }
+      let!(:group8) do
+        Group.create!(tournament: tournament, name: 'My group 8', team1: team81, team2: team82)
+      end
 
       describe '#call' do
         subject { instance.call(tournament_id: tournament.id) }
-        let(:draws_with_team_ids) { subject.map {|draw| draw.map { |match| match.map{ |team| team.database_id}}}}
+        let(:draws_with_team_names) { subject.map {|draw| draw.map { |match| match.map{ |team| team.name}}}}
+        # binding.pry
+        let(:right_draws) do
+           draws_with_team_names.select! do |draw|
+            # binding.pry
+            draw.include?(["Chelsea","Dortmund"]) &&
+            draw.include?(["Benfica","Bruges"]) &&
+            draw.include?(["Bayern Munich","PSG"]) &&
+            draw.include?(["Tottenham","Milan AC"]) &&
+            draw.include?(["Porto","Inter Milan"]) &&
+            draw.include?(["Manchester City","RB Leipzig"]) &&
+            draw.include?(["Naples","Francfort"]) &&
+            draw.include?(["Real Madrid","Liverpool"])
+
+           end
+        end
 
         it "should return the right draws" do
-          # binding.pry
-          expect(draws_with_team_ids).to match_array(
+          expect(right_draws).to include(
             [
-              [
-                [1, 2], [3, 4]
-              ],
-              [
-                [1, 3], [2, 4]
-              ], 
-              [ [1, 4], [2, 3]
-              ]
+              ["Chelsea","Dortmund"],
+              ["Real Madrid","Liverpool"],
+              ["Manchester City","RB Leipzig"],
+              ["Benfica","Bruges"],
+              ["Naples","Francfort"],
+              ["Porto","Inter Milan"],
+              ["Bayern Munich","PSG"],
+              ["Tottenham","Milan AC"],
             ]
             )
         end

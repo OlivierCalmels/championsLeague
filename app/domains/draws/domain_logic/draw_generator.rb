@@ -23,6 +23,8 @@ module Draws
       end
 
       def generate_draws(teams)
+        start_time = DateTime.now
+        time = start_time
         teams1 = teams.map{|teams_by_group| teams_by_group[0] }
         teams2 = teams.map{|teams_by_group| teams_by_group[1] }
         # teams2 = (1..8).to_a
@@ -52,7 +54,7 @@ module Draws
         teams2_permutations = remove_first_permutations(teams2_permutations,number_of_matches_per_draw )
 
         permutations = []
-        teams2_permutations.each do |team2_permutation|
+        valid_draws = teams2_permutations.each.with_index do |team2_permutation, permut_number|
           permutation = []
           team2_permutation.each.with_index do |team, group|
             if team.group_id == teams1[group].group_id
@@ -60,20 +62,30 @@ module Draws
               # debugger
               break
             end
+            if team.country == teams1[group].country
+              puts "Même pays"
+              # debugger
+              break
+            end
+
             # break if team.country == teams1[group].country
-            permutation << [team, teams1[group]]
+            permutation << [ teams1[group], team]
           end
           # debugger
           if permutation.count == number_of_matches_per_draw
-            puts "On garde permutation: #{permutation}"
+            # puts "On garde permutation: #{permutation}"
             permutations << permutation
           end
+          last_time = time
+          time = DateTime.now
+          puts "permut_number: #{permut_number}/#{teams2_permutations.count} - #{((last_time - time) * 24 * 60 * 60).to_i } "
         end
         puts "Fin de generate_draws"
-        puts "Permutations: #{permutations}"
+        # puts "Permutations: #{permutations}"
 
-        puts "Permutations: #{permutations.count}"
+        puts "Number of Permutations kept: #{permutations.count}"
         # binding.pry
+        permutations
       end
 
 
